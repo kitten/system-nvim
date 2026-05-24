@@ -32,7 +32,7 @@
     };
 
     nvim-fff = {
-      url = "github:dmtrKovalenko/fff.nvim";
+      url = "github:dmtrKovalenko/fff.nvim/v0.8.2";
       flake = false;
     };
 

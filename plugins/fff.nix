@@ -10,37 +10,37 @@
 with lib;
 let
   flake = inputs.nvim-fff;
-  version = "${flake.rev}";
+  version = "0.8.2";
   src = "${flake.outPath}";
   cfg = config.fff;
 
   libExt = if pkgs.stdenv.hostPlatform.isDarwin then "dylib" else "so";
 
-  fff-nvim-lib = pkgs.rustPlatform.buildRustPackage {
-    inherit version src;
-    pname = "fff-nvim-lib";
-    buildAndTestSubdir = "crates/fff-nvim";
-    cargoBuildFlags = [ "--lib" ];
-    # fff-mcp lists `zlob` in its default features which (despite mcp not being
-    # in fff-nvim's dep graph) flips on CARGO_FEATURE_ZLOB for fff-search via
-    # workspace resolution and demands Zig. zlob is an optional Zig-backed
-    # glob matcher; the pure-Rust globset fallback is fine.
-    postPatch = ''
-      substituteInPlace crates/fff-mcp/Cargo.toml \
-        --replace-fail 'default = ["zlob"]' 'default = []'
-    '';
-    env = {
-      # Lua symbols are resolved at runtime by Neovim's embedded LuaJIT
-      RUSTFLAGS = lib.optionalString pkgs.stdenv.hostPlatform.isDarwin "-C link-arg=-undefined -C link-arg=dynamic_lookup";
+  prebuiltLibs = {
+    "aarch64-darwin" = {
+      asset = "aarch64-apple-darwin.dylib";
+      hash = "sha256-AB3xDe1PUj97Xt5S9wTZC/UO7amProGqedYAV3W0aPU=";
     };
-    nativeBuildInputs = [ pkgs.git ];
-    cargoLock = {
-      allowBuiltinFetchGit = true;
-      lockFile = pkgs.writeTextFile {
-        name = "Cargo.lock";
-        text = builtins.readFile "${flake.outPath}/Cargo.lock";
-      };
+    "x86_64-darwin" = {
+      asset = "x86_64-apple-darwin.dylib";
+      hash = "sha256-+hg3wrTx/Lx/bR/iGW2Fz48nGTxtO9H1LbaOYU4WEuo=";
     };
+    "aarch64-linux" = {
+      asset = "aarch64-unknown-linux-gnu.so";
+      hash = "sha256-h4GJ+jM5+UBRbPoGDhs5t3YjaDWEaCGLb/SPnVdn7UM=";
+    };
+    "x86_64-linux" = {
+      asset = "x86_64-unknown-linux-gnu.so";
+      hash = "sha256-YCprHIjzgqa8DbFxO4N1wR/O74HdAFRA7FdsbmODlSo=";
+    };
+  };
+  spec =
+    prebuiltLibs.${pkgs.stdenv.hostPlatform.system}
+      or (throw "fff.nvim: no prebuilt for ${pkgs.stdenv.hostPlatform.system}");
+
+  fff-nvim-lib = pkgs.fetchurl {
+    url = "https://github.com/dmtrKovalenko/fff.nvim/releases/download/v${version}/${spec.asset}";
+    inherit (spec) hash;
   };
 
   layoutType = types.submoduleOpts {
@@ -131,7 +131,7 @@ in
     # fff.nvim looks for the matcher at <plugin>/target/release/libfff_nvim.<ext>
     preInstall = ''
       mkdir -p target/release
-      ln -s ${fff-nvim-lib}/lib/libfff_nvim.${libExt} target/release/libfff_nvim.${libExt}
+      ln -s ${fff-nvim-lib} target/release/libfff_nvim.${libExt}
     '';
     doInstallCheck = true;
     nvimRequireCheck = "fff";
