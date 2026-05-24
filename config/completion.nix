@@ -95,7 +95,8 @@ with lib;
         function()
           local buf = vim.api.nvim_get_current_buf()
           if vim.b[buf].big then return false end
-          if vim.bo[buf].filetype == 'gitcommit' then return false end
+          local ft = vim.bo[buf].filetype
+          if ft == 'gitcommit' or ft == 'namu_prompt' then return false end
           local ok, node = pcall(vim.treesitter.get_node)
           if ok and node then
             local t = node:type()

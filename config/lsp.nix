@@ -250,7 +250,7 @@ in
       {
         mode = "n";
         key = "gf";
-        action = inline "vim.lsp.buf.code_action";
+        action = nvim.lazy "namu" "vim.lsp.buf.code_action()";
         options = silent // {
           desc = "Code Actions";
         };
