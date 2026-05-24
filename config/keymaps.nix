@@ -45,6 +45,13 @@ in
       }
 
       {
+        mode = "x";
+        key = "<D-c>";
+        action = "\"+y";
+        options = silent;
+      }
+
+      {
         mode = "";
         key = "<c-w>,";
         action = ":vsp<cr>";
@@ -98,19 +105,13 @@ in
       }
       {
         mode = "x";
-        key = "<m-c>";
-        action = "\"+y";
-        options = silent;
-      }
-      {
-        mode = "x";
-        key = "<m-v>";
+        key = "<D-v>";
         action = "\"+p";
         options = silent;
       }
       {
         mode = "n";
-        key = "<m-v>";
+        key = "<D-v>";
         action = "\"+P";
         options = silent;
       }

@@ -115,15 +115,6 @@ with lib;
     nvim.luaInit = /* lua */ ''
       vim.loader.enable()
 
-      vim.api.nvim_exec([[
-        set t_Co=256
-        set t_ZH=^\[\[3m
-        set t_ZR=^\[\[23m
-        let &t_Cs = "\e\[4:3m"
-        let &t_Ce = "\e\[4:0m"
-        let &t_ut=""
-      ]], false)
-
       -- append, don't overwrite
       vim.o.shortmess = vim.o.shortmess .. 'WcCIAa'
 
