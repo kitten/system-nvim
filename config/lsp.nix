@@ -301,6 +301,18 @@ in
           return original_hover(opts)
         end
       end
+
+      do
+        local orig_open = vim.lsp.util.open_floating_preview
+        vim.lsp.util.open_floating_preview = function(contents, syntax, opts)
+          if type(contents) == 'table' then
+            while #contents > 0 and contents[#contents]:match('^%s*$') do
+              contents[#contents] = nil
+            end
+          end
+          return orig_open(contents, syntax, opts)
+        end
+      end
     '';
   };
 }
