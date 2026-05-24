@@ -141,7 +141,10 @@ in
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.fff ];
 
-    luaInit = nvim.lazyInit "fff" /* lua */ ''
+    # Eager: fff.setup is just `vim.g.fff = config`. fff's own plugin/fff.lua
+    # reads vim.g.fff at UIEnter and caches; deferring our setup means UIEnter
+    # snapshots empty config and our options are ignored.
+    luaInit = /* lua */ ''
       require('fff').setup(${lua.toLua cfg.config})
     '';
   };

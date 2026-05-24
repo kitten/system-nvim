@@ -37,6 +37,10 @@ in
     config = mkOption {
       default = { };
       type = types.submoduleOpts {
+        global = mkOption {
+          default = { };
+          type = types.attrsOf types.anything;
+        };
         namu_symbols = mkOption {
           default = { };
           type = moduleType "namu_symbols" true;

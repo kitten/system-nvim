@@ -14,7 +14,7 @@ in
       enable = true;
       config = {
         watchtower.enable = true;
-        namu_symbols.options.movement.close = [
+        global.movement.close = [
           "<ESC>"
           "<C-c>"
         ];

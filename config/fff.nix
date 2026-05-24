@@ -33,7 +33,7 @@ in
       {
         mode = "n";
         key = "<leader>o";
-        action = nvim.lazy "fff" "require('fff').find_files()";
+        action = lua.mkInline "function() require('fff').find_files() end";
         options = silent // {
           desc = "Workspace Files";
         };
@@ -41,7 +41,7 @@ in
       {
         mode = "n";
         key = "<leader>f";
-        action = nvim.lazy "fff" "require('fff').live_grep()";
+        action = lua.mkInline "function() require('fff').live_grep() end";
         options = silent // {
           desc = "Live Grep";
         };
