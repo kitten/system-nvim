@@ -22,7 +22,7 @@
     };
 
     nvim-oil = {
-      url = "github:stevearc/oil.nvim";
+      url = "github:barrettruth/canola.nvim";
       flake = false;
     };
 

@@ -26,7 +26,7 @@ in
     inherit src version;
     pname = "nvim-oil";
     nvimRequireCheck = [ "oil" ];
-    meta.homepage = "https://github.com/stevearc/oil.nvim/";
+    meta.homepage = "https://github.com/barrettruth/canola.nvim/";
   };
 
   # oil replaces netrw
