@@ -62,13 +62,35 @@ in
           ".eslintrc.js"
           ".eslintrc.cjs"
           ".eslintrc.json"
+          ".eslintrc.yaml"
+          ".eslintrc.yml"
           "eslint.config.js"
           "eslint.config.mjs"
           "eslint.config.cjs"
-          "package.json"
-          ".git"
+          "eslint.config.ts"
         ];
         settings = {
+          validate = "on";
+          useESLintClass = false;
+          experimental.useFlatConfig = false;
+          codeAction = {
+            disableRuleComment = {
+              enable = true;
+              location = "separateLine";
+            };
+            showDocumentation.enable = true;
+          };
+          codeActionOnSave = {
+            enable = false;
+            mode = "all";
+          };
+          format = false;
+          quiet = false;
+          onIgnoredFiles = "off";
+          run = "onType";
+          problems.shortenToSingleLine = false;
+          nodePath = "";
+          workingDirectory.mode = "auto";
           rulesCustomizations = [
             {
               rule = "prettier/prettier";
@@ -92,6 +114,29 @@ in
             }
           ];
         };
+      };
+
+      oxlint = {
+        cmd = [
+          (bin pkgs.oxlint "oxlint")
+          "--lsp"
+        ];
+        filetypes = [
+          "javascript"
+          "javascriptreact"
+          "javascript.jsx"
+          "typescript"
+          "typescriptreact"
+          "typescript.tsx"
+          "vue"
+          "svelte"
+          "astro"
+        ];
+        root_markers = [
+          ".oxlintrc.json"
+          ".oxlintrc.jsonc"
+          "oxlint.config.json"
+        ];
       };
 
       cssls = {
