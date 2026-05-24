@@ -68,9 +68,11 @@ with lib;
 
   # Keymap-side: wrap `action` (a Lua statement) so it runs the matching
   # `lazyInit` once before invoking the action body.
-  lazy = name: action: lua.mkInline /* lua */ ''
-    function() _G.__lazy_${name}(); ${action} end
-  '';
+  lazy =
+    name: action:
+    lua.mkInline /* lua */ ''
+      function() _G.__lazy_${name}(); ${action} end
+    '';
 
   mkAutocmdLua =
     autocmds:

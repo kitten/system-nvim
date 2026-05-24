@@ -56,14 +56,14 @@ with lib;
         # close the menu but always fall through so <C-c> reaches vim's
         # mapping (which turns <C-c> → <Esc>, exiting insert mode)
         "<C-c>" = [
-          (lua.mkInline /*lua*/ "function(cmp) cmp.hide() end")
+          (lua.mkInline /* lua */ "function(cmp) cmp.hide() end")
           "fallback"
         ];
       };
 
       sources = {
         min_keyword_length = 2;
-        default = lua.mkInline /*lua*/ ''
+        default = lua.mkInline /* lua */ ''
           function()
             for _, c in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
               if c.server_capabilities and c.server_capabilities.completionProvider then
