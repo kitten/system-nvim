@@ -37,12 +37,15 @@ with lib;
           function()
             local buf = vim.api.nvim_get_current_buf()
             local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-            vim.b[buf].big = ok and stats and (stats.size > 100 * 1024)
+            local size = (ok and stats) and stats.size or 0
+            vim.b[buf].big = size > 100 * 1024
             if vim.b[buf].big then
               vim.opt_local.spell = false
               vim.opt_local.showmatch = false
-              vim.opt_local.undofile = false
               vim.opt_local.foldmethod = 'manual'
+            end
+            if size > 200 * 1024 then
+              vim.opt_local.undofile = false
             end
           end
         '';
