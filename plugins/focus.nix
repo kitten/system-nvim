@@ -142,7 +142,9 @@ in
     nvim = mkIf cfg.enable {
       plugins = [ plugins.focus ];
       luaInit = /* lua */ ''
-        require('focus').setup(${lua.toLua cfg.config})
+        vim.schedule(function()
+          require('focus').setup(${lua.toLua cfg.config})
+        end)
       '';
     };
 

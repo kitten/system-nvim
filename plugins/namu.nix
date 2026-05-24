@@ -87,7 +87,7 @@ in
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.namu ];
 
-    luaInit = /* lua */ ''
+    luaInit = nvim.lazyInit "namu" /* lua */ ''
       require('namu').setup(${lua.toLua cfg.config})
     '';
   };

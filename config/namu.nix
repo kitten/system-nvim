@@ -6,7 +6,7 @@ let
     silent = true;
     noremap = true;
   };
-  inline = code: lua.mkInline code;
+  open = action: nvim.lazy "namu" action;
 in
 {
   config = {
@@ -43,7 +43,7 @@ in
       {
         mode = "n";
         key = "<leader>n";
-        action = inline "function() require('namu.namu_symbols').show() end";
+        action = open "require('namu.namu_symbols').show()";
         options = silent // {
           desc = "Document Symbols";
         };
@@ -51,7 +51,7 @@ in
       {
         mode = "n";
         key = "<leader>N";
-        action = inline "function() require('namu.namu_watchtower').show() end";
+        action = open "require('namu.namu_watchtower').show()";
         options = silent // {
           desc = "Workspace Symbols (Watchtower)";
         };
@@ -59,7 +59,7 @@ in
       {
         mode = "n";
         key = "<leader>d";
-        action = inline "function() require('namu.namu_diagnostics').show_buffer_diagnostics() end";
+        action = open "require('namu.namu_diagnostics').show_buffer_diagnostics()";
         options = silent // {
           desc = "Document Diagnostics";
         };
@@ -67,7 +67,7 @@ in
       {
         mode = "n";
         key = "<leader>D";
-        action = inline "function() require('namu.namu_diagnostics').show_workspace_diagnostics() end";
+        action = open "require('namu.namu_diagnostics').show_workspace_diagnostics()";
         options = silent // {
           desc = "Workspace Diagnostics";
         };
@@ -78,7 +78,7 @@ in
       {
         mode = "n";
         key = "gC";
-        action = inline "function() require('namu.namu_callhierarchy').show_both_calls() end";
+        action = open "require('namu.namu_callhierarchy').show_both_calls()";
         options = silent // {
           desc = "Call Hierarchy (Namu)";
         };

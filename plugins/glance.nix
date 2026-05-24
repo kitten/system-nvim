@@ -102,7 +102,7 @@ in
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.glance ];
 
-    luaInit = /* lua */ ''
+    luaInit = nvim.lazyInit "glance" /* lua */ ''
       require('glance').setup(${lua.toLua cfg.config})
     '';
   };

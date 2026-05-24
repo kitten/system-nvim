@@ -9,11 +9,9 @@ let
 
   glanceAction =
     scope: fallback:
-    lua.mkInline /* lua */ ''
-      function()
-        local ok, glance = pcall(require, 'glance')
-        if ok then glance.open('${scope}') else vim.lsp.buf.${fallback}() end
-      end
+    nvim.lazy "glance" /* lua */ ''
+      local ok, glance = pcall(require, 'glance')
+      if ok then glance.open('${scope}') else vim.lsp.buf.${fallback}() end
     '';
 in
 {
