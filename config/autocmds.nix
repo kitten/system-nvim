@@ -66,13 +66,11 @@ with lib;
       {
         event = "FileType";
         pattern = "*";
-        desc = "Start builtin treesitter highlight & folds";
+        desc = "Start builtin treesitter highlight";
         callback = lua.mkInline /* lua */ ''
           function(args)
             if vim.b[args.buf].big then return end
             pcall(vim.treesitter.start, args.buf)
-            vim.wo.foldexpr = 'v:lua.vim.treesitter.foldexpr()'
-            vim.wo.foldmethod = 'expr'
           end
         '';
       }
