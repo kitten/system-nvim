@@ -60,7 +60,7 @@ with lib;
         showmode = false;
         ruler = false;
         termguicolors = true;
-        cmdheight = 0;
+        cmdheight = 1;
         list = true;
 
         completeopt = "menuone,noinsert,noselect,popup";
