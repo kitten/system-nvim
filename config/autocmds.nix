@@ -66,11 +66,18 @@ with lib;
       {
         event = "FileType";
         pattern = "*";
-        desc = "Start builtin treesitter highlight";
+        desc = "Start treesitter highlight & indent";
         callback = lua.mkInline /* lua */ ''
           function(args)
             if vim.b[args.buf].big then return end
             pcall(vim.treesitter.start, args.buf)
+            local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
+            if lang then
+              local ok, q = pcall(vim.treesitter.query.get, lang, 'indents')
+              if ok and q then
+                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+              end
+            end
           end
         '';
       }

@@ -51,6 +51,7 @@ with lib;
         undolevels = 1000;
         undoreload = 10000;
 
+        # clipboard = "unnamed,unnamedplus"; # uncomment for system-clipboard yank/paste
         wrap = false;
         showmode = false;
         ruler = false;
