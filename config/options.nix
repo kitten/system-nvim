@@ -24,8 +24,7 @@ with lib;
         softtabstop = 2;
         shiftwidth = 2;
 
-        lazyredraw = true;
-        updatetime = 500;
+        updatetime = 300;
         timeoutlen = 500;
 
         # foldexpr / foldmethod get overridden per-FT by autocmds

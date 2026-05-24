@@ -91,9 +91,10 @@ let
 
   fuzzyType = types.submoduleOpts {
     # Defaults reflect that the Nix derivation bundles libblink_cmp_fuzzy:
-    # the rust matcher is always available, so don't warn or download.
+    # the rust matcher is always available. "rust" (not "prefer_rust") skips
+    # loading fuzzy.download / fuzzy.download.git on startup.
     implementation = mkOption {
-      default = "prefer_rust";
+      default = "rust";
       type = types.enum [
         "prefer_rust_with_warning"
         "prefer_rust"
@@ -169,12 +170,14 @@ in
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.blink-cmp ];
 
-    # Pre-warm the rust submodule before setup. blink's async setup runs the
-    # detection pcall inside a fast event, where Neovim's loader returns an
-    # empty rtp cache and the require fails. Loading it here (synchronously,
-    # outside the fast event) caches it in package.loaded for blink to find.
+    # Bundled lib makes blink's downloader dead code; stub it to skip the
+    # requires (and the fast-event rtp-cache bug that needed a pre-warm).
     luaInit = /* lua */ ''
-      pcall(require, 'blink.cmp.fuzzy.rust')
+      package.loaded['blink.cmp.fuzzy.download'] = {
+        ensure_downloaded = function(cb)
+          vim.schedule(function() cb(nil, 'rust') end)
+        end,
+      }
       require('blink.cmp').setup(${lua.toLua cfg.config})
     '';
   };

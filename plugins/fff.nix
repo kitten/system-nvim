@@ -141,9 +141,10 @@ in
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.fff ];
 
-    # Pre-warm the rust submodule (same loader-cache concern as blink-cmp).
+    # Pre-warm the rust submodule (same loader-cache concern as blink-cmp),
+    # but defer so it doesn't block startup — fff is only used on demand.
     luaInit = /* lua */ ''
-      pcall(require, 'fff.rust')
+      vim.schedule(function() pcall(require, 'fff.rust') end)
       require('fff').setup(${lua.toLua cfg.config})
     '';
   };

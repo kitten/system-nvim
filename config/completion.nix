@@ -88,16 +88,19 @@ with lib;
         };
       };
 
+      # Runs on every keystroke — keep cheap. get_node():type() is the leaf
+      # from the incremental parse tree (one FFI call); much cheaper than
+      # get_captures_at_cursor() which executes every highlight query.
       enabled = lua.mkInline /* lua */ ''
         function()
           local buf = vim.api.nvim_get_current_buf()
           if vim.b[buf].big then return false end
           if vim.bo[buf].filetype == 'gitcommit' then return false end
-          if vim.api.nvim_get_mode().mode == 'c' then return true end
-          local ok, captures = pcall(vim.treesitter.get_captures_at_cursor)
-          if ok then
-            for _, c in ipairs(captures) do
-              if c:lower():match('comment') then return false end
+          local ok, node = pcall(vim.treesitter.get_node)
+          if ok and node then
+            local t = node:type()
+            if t == 'comment' or t == 'line_comment' or t == 'block_comment' then
+              return false
             end
           end
           return true

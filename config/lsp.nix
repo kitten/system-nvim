@@ -228,21 +228,21 @@ in
       }
     ];
 
-    # both no-op without an attached client, so global registration is safe
-    autocmds = [
-      {
-        event = "CursorHold";
-        pattern = "*";
-        desc = "LSP document_highlight";
-        callback = inline "vim.lsp.buf.document_highlight";
-      }
-      {
-        event = "CursorMoved";
-        pattern = "*";
-        desc = "LSP clear_references";
-        callback = inline "vim.lsp.buf.clear_references";
-      }
-    ];
+    # Register CursorHold/CursorMoved buffer-locally on LspAttach so the
+    # autocmds only exist on buffers with a client (avoids dispatch on
+    # every cursor move in non-LSP buffers).
+    lsp.onAttach = /* lua */ ''
+      vim.api.nvim_create_autocmd('CursorHold', {
+        buffer = buf,
+        desc = 'LSP document_highlight',
+        callback = vim.lsp.buf.document_highlight,
+      })
+      vim.api.nvim_create_autocmd('CursorMoved', {
+        buffer = buf,
+        desc = 'LSP clear_references',
+        callback = vim.lsp.buf.clear_references,
+      })
+    '';
 
     # vim.lsp.with is deprecated in 0.11+; wrap vim.lsp.buf.hover instead
     nvim.luaInit = /* lua */ ''
