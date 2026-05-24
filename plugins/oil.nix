@@ -1,4 +1,11 @@
-{ pkgs, lib, config, plugins, inputs, ... }:
+{
+  pkgs,
+  lib,
+  config,
+  plugins,
+  inputs,
+  ...
+}:
 
 with lib;
 let
@@ -6,7 +13,8 @@ let
   version = "${flake.rev}";
   src = "${flake.outPath}";
   cfg = config.oil;
-in {
+in
+{
   options.oil = {
     enable = mkOption {
       default = false;
@@ -21,10 +29,16 @@ in {
     meta.homepage = "https://github.com/stevearc/oil.nvim/";
   };
 
+  # oil replaces netrw
+  config.vim.g = mkIf cfg.enable {
+    loaded_netrw = 1;
+    loaded_netrwPlugin = 1;
+  };
+
   config.nvim = mkIf cfg.enable {
     plugins = [ plugins.oil ];
 
-    luaInit = /*lua*/''
+    luaInit = /* lua */ ''
       require('oil').setup({
         default_file_explorer = true,
         delete_to_trash = false,
@@ -76,10 +90,6 @@ in {
         ssh = { border = 'none', },
         keymaps_help = { border = 'none' },
       })
-
-      -- disable netrw
-      vim.g.loaded_netrw = 1
-      vim.g.loaded_netrwPlugin = 1
     '';
   };
 }

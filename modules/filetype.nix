@@ -1,9 +1,15 @@
-{ pkgs, config, lib, ... }:
+{
+  pkgs,
+  config,
+  lib,
+  ...
+}:
 
 with lib;
 let
   cfg = config.filetype;
-in {
+in
+{
   options.filetype = {
     enable = mkOption {
       default = true;
@@ -34,14 +40,18 @@ in {
   };
 
   config.nvim = {
-    luaInit = if cfg.enable then /*lua*/''
-      vim.cmd.filetype({ args = { 'plugin', ${lua.toLua cfg.plugin} } })
-      vim.cmd.filetype({ args = { 'plugin', 'indent', ${lua.toLua cfg.indent} } })
+    luaInit =
+      if cfg.enable then
+        /* lua */ ''
+          vim.cmd.filetype({ args = { 'plugin', ${lua.toLua cfg.plugin} } })
+          vim.cmd.filetype({ args = { 'plugin', 'indent', ${lua.toLua cfg.indent} } })
 
-      vim.filetype.add({
-        extension = ${lua.toLua cfg.extension},
-        pattern = ${lua.toLua cfg.pattern},
-      })
-    '' else /*lua*/''vim.cmd.filetype({ args = { 'off' } })'';
+          vim.filetype.add({
+            extension = ${lua.toLua cfg.extension},
+            pattern = ${lua.toLua cfg.pattern},
+          })
+        ''
+      else
+        /* lua */ "vim.cmd.filetype({ args = { 'off' } })";
   };
 }

@@ -227,11 +227,7 @@ rec {
         else if isFunction v then
           abort "lib.lua.toLua: Unexpected function: " + generators.toPretty { } v
         else if isList v then
-          "{"
-          + introSpace
-          + concatMapStringsSep ("," + introSpace) (go (indent + "  ")) v
-          + outroSpace
-          + "}"
+          "{" + introSpace + concatMapStringsSep ("," + introSpace) (go (indent + "  ")) v + outroSpace + "}"
         else if isAttrs v then
           # apply pretty values if allowed
           if allowPrettyValues && v ? __pretty && v ? val then

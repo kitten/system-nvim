@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 with lib;
 let
@@ -96,7 +101,8 @@ let
       };
     };
   };
-in {
+in
+{
   options = {
     package = mkOption {
       default = pkgs.neovim-unwrapped;
@@ -115,12 +121,15 @@ in {
   };
 
   config = {
-    output.package = pkgs.wrapNeovimUnstable config.package (config.nvim // {
-      extraName = "-system";
-      withPython2 = false;
-      wrapRc = true;
-      neovimRcContent = config.nvim.vimlInit;
-      luaRcContent = config.nvim.luaInit;
-    });
+    output.package = pkgs.wrapNeovimUnstable config.package (
+      config.nvim
+      // {
+        extraName = "-system";
+        withPython2 = false;
+        wrapRc = true;
+        neovimRcContent = config.nvim.vimlInit;
+        luaRcContent = config.nvim.luaInit;
+      }
+    );
   };
 }

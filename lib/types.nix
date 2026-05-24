@@ -47,27 +47,30 @@ rec {
 
   submoduleOpts = options: types.submodule { inherit options; };
 
-  mode = let
-    modeEnum = types.enum [
-      "" # normal, visual, select, and operator-pending (same as plain ':map')
-      "n" # normal
-      "!" # insert and command-line
-      "i" # insert
-      "c" # command
-      "v" # visual and select
-      "x" # visual only
-      "s" # select
-      "o" # operator-pending
-      "t" # terminal
-      "l" # insert, command-line and lang-arg
-      "!a" # abbreviation in insert and command-line
-      "ia" # abbreviation in insert
-      "ca" # abbreviation in command
-    ];
-  in types.either modeEnum (types.listOf modeEnum) // {
-    description = "a mode or list of modes";
-    descriptionClass = "conjunction";
-  };
+  mode =
+    let
+      modeEnum = types.enum [
+        "" # normal, visual, select, and operator-pending (same as plain ':map')
+        "n" # normal
+        "!" # insert and command-line
+        "i" # insert
+        "c" # command
+        "v" # visual and select
+        "x" # visual only
+        "s" # select
+        "o" # operator-pending
+        "t" # terminal
+        "l" # insert, command-line and lang-arg
+        "!a" # abbreviation in insert and command-line
+        "ia" # abbreviation in insert
+        "ca" # abbreviation in command
+      ];
+    in
+    types.either modeEnum (types.listOf modeEnum)
+    // {
+      description = "a mode or list of modes";
+      descriptionClass = "conjunction";
+    };
 
   keymapOptions = types.submodule {
     options = {
@@ -105,6 +108,46 @@ rec {
       };
       buffer = mkOption {
         default = null;
+        type = types.nullOr (types.either types.bool types.int);
+      };
+    };
+  };
+
+  autocmd = types.submodule {
+    options = {
+      event = mkOption {
+        type = types.either types.str (types.listOf types.str);
+      };
+      pattern = mkOption {
+        default = null;
+        type = types.nullOr (types.either types.str (types.listOf types.str));
+      };
+      group = mkOption {
+        default = null;
+        type = types.nullOr (types.either types.str types.int);
+      };
+      callback = mkOption {
+        default = null;
+        type = types.nullOr rawLua;
+      };
+      command = mkOption {
+        default = null;
+        type = types.nullOr types.str;
+      };
+      desc = mkOption {
+        default = null;
+        type = types.nullOr types.str;
+      };
+      buffer = mkOption {
+        default = null;
+        type = types.nullOr (types.either types.bool types.int);
+      };
+      once = mkOption {
+        default = false;
+        type = types.bool;
+      };
+      nested = mkOption {
+        default = false;
         type = types.bool;
       };
     };

@@ -4,8 +4,12 @@ with lib;
 {
   imports = [
     ./keymaps.nix
+    ./autocmds.nix
+    ./options.nix
     ./filetype.nix
     ./theme.nix
+    ./statusline.nix
+    ./lsp.nix
     ./output.nix
   ];
 
