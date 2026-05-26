@@ -28,9 +28,7 @@ in
         ];
         root_markers = [
           "tsconfig.json"
-          "package.json"
           "jsconfig.json"
-          ".git"
         ];
         workspace_required = true;
         init_options = {
@@ -278,18 +276,22 @@ in
 
     # Register CursorHold/CursorMoved buffer-locally on LspAttach so the
     # autocmds only exist on buffers with a client (avoids dispatch on
-    # every cursor move in non-LSP buffers).
+    # every cursor move in non-LSP buffers). Gate on documentHighlight
+    # support so servers without it don't trigger noisy warnings.
     lsp.onAttach = /* lua */ ''
-      vim.api.nvim_create_autocmd('CursorHold', {
-        buffer = buf,
-        desc = 'LSP document_highlight',
-        callback = vim.lsp.buf.document_highlight,
-      })
-      vim.api.nvim_create_autocmd('CursorMoved', {
-        buffer = buf,
-        desc = 'LSP clear_references',
-        callback = vim.lsp.buf.clear_references,
-      })
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      if client and client:supports_method('textDocument/documentHighlight', buf) then
+        vim.api.nvim_create_autocmd('CursorHold', {
+          buffer = buf,
+          desc = 'LSP document_highlight',
+          callback = vim.lsp.buf.document_highlight,
+        })
+        vim.api.nvim_create_autocmd('CursorMoved', {
+          buffer = buf,
+          desc = 'LSP clear_references',
+          callback = vim.lsp.buf.clear_references,
+        })
+      end
     '';
 
     # vim.lsp.with is deprecated in 0.11+; wrap vim.lsp.buf.hover instead
