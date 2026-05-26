@@ -32,6 +32,7 @@ in
           "jsconfig.json"
           ".git"
         ];
+        workspace_required = true;
         init_options = {
           hostInfo = "neovim";
           disableAutomaticTypingAcquisition = true;
@@ -69,6 +70,7 @@ in
           "eslint.config.cjs"
           "eslint.config.ts"
         ];
+        workspace_required = true;
         settings = {
           validate = "on";
           useESLintClass = false;
@@ -137,6 +139,7 @@ in
           ".oxlintrc.jsonc"
           "oxlint.config.json"
         ];
+        workspace_required = true;
       };
 
       cssls = {

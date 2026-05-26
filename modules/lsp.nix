@@ -31,6 +31,16 @@ let
         type = types.nullOr (types.listOf types.str);
       };
 
+      workspace_required = mkOption {
+        default = null;
+        type = types.nullOr types.bool;
+        description = ''
+          If true, the server only starts when a `root_dir` is found via
+          `root_markers`. Without this, Neovim still launches the server in
+          single-file mode when no marker matches.
+        '';
+      };
+
       init_options = mkOption {
         default = null;
         type = types.nullOr (types.attrsOf types.anything);
@@ -51,6 +61,7 @@ let
         cmd
         filetypes
         root_markers
+        workspace_required
         init_options
         settings
         ;
