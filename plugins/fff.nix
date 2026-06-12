@@ -10,7 +10,7 @@
 with lib;
 let
   flake = inputs.nvim-fff;
-  version = "0.8.2";
+  version = "0.9.4";
   src = "${flake.outPath}";
   cfg = config.fff;
 
@@ -19,19 +19,19 @@ let
   prebuiltLibs = {
     "aarch64-darwin" = {
       asset = "aarch64-apple-darwin.dylib";
-      hash = "sha256-AB3xDe1PUj97Xt5S9wTZC/UO7amProGqedYAV3W0aPU=";
+      hash = "sha256-L3qdU/5VWiKmWFZhErjEiGrfMnXk6x3QTHQcx8hagPU=";
     };
     "x86_64-darwin" = {
       asset = "x86_64-apple-darwin.dylib";
-      hash = "sha256-+hg3wrTx/Lx/bR/iGW2Fz48nGTxtO9H1LbaOYU4WEuo=";
+      hash = "sha256-iVG9dOYt3yuQIxDxZEa8pRA8+URpO2AcFYKpANzaMkI=";
     };
     "aarch64-linux" = {
       asset = "aarch64-unknown-linux-gnu.so";
-      hash = "sha256-h4GJ+jM5+UBRbPoGDhs5t3YjaDWEaCGLb/SPnVdn7UM=";
+      hash = "sha256-BlosoMP9q0+7pjrKPxbiSk9ZA9+wYq1H09BaDaZRg08=";
     };
     "x86_64-linux" = {
       asset = "x86_64-unknown-linux-gnu.so";
-      hash = "sha256-YCprHIjzgqa8DbFxO4N1wR/O74HdAFRA7FdsbmODlSo=";
+      hash = "sha256-jNu+4fvRKdxnAzIqJAzv2AvG+R5qC7n+dKdY0HAPnxQ=";
     };
   };
   spec =
@@ -112,6 +112,10 @@ in
         title = mkOption {
           default = "";
           type = types.str;
+        };
+        frecency = mkOption {
+          default = { };
+          type = types.attrsOf types.anything;
         };
         keymaps = mkOption {
           default = { };

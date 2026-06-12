@@ -19,6 +19,7 @@ in
           preview_position = "right";
           preview_size = 0.55;
         };
+        frecency.enabled = false;
         keymaps = {
           close = [
             "<Esc>"
