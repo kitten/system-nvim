@@ -189,8 +189,11 @@ in
           end
 
           function _G.statusline_render()
-            local cur = vim.api.nvim_get_current_win()
-            return render(cur == vim.g.statusline_winid)
+            local win = vim.g.statusline_winid
+            local is_active = vim.api.nvim_get_current_win() == win
+            return vim.api.nvim_win_call(win, function()
+              return render(is_active)
+            end)
           end
 
           vim.o.statusline = '%!v:lua.statusline_render()'
