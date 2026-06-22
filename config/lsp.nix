@@ -136,6 +136,9 @@ in
           ".oxlintrc.json"
           ".oxlintrc.jsonc"
           "oxlint.config.json"
+          "oxlint.config.ts"
+          "oxlint.config.mjs"
+          "oxlint.config.js"
         ];
         workspace_required = true;
       };
