@@ -30,23 +30,29 @@ in
       };
     };
 
-    keys.bindings = [
-      {
-        mode = "n";
-        key = "<leader>o";
-        action = lua.mkInline "function() require('fff').find_files() end";
-        options = silent // {
-          desc = "Workspace Files";
-        };
-      }
-      {
-        mode = "n";
-        key = "<leader>f";
-        action = lua.mkInline "function() require('fff').live_grep() end";
-        options = silent // {
-          desc = "Live Grep";
-        };
-      }
-    ];
+    keys.bindings =
+      let
+        atRoot =
+          fn:
+          lua.mkInline "function() require('fff').${fn}({ cwd = vim.fs.root(0, '.git') or vim.fn.getcwd() }) end";
+      in
+      [
+        {
+          mode = "n";
+          key = "<leader>o";
+          action = atRoot "find_files";
+          options = silent // {
+            desc = "Workspace Files";
+          };
+        }
+        {
+          mode = "n";
+          key = "<leader>f";
+          action = atRoot "live_grep";
+          options = silent // {
+            desc = "Live Grep";
+          };
+        }
+      ];
   };
 }
